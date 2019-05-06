@@ -1,0 +1,1068 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Welch!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title>Első osztályom</title>
+        <para>
+            Valósítsd meg C++-ban és Java-ban az módosított polártranszformációs algoritmust! A matek háttér 
+            teljesen irreleváns, csak annyiban érdekes, hogy az algoritmus egy számítása során két normálist
+            számol ki, az egyiket elspájzolod és egy további logikai taggal az osztályban jelzed, hogy van vagy
+            nincs eltéve kiszámolt szám.
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat... térj ki arra is, hogy a JDK forrásaiban a Sun programozói
+            pont úgy csinálták meg ahogyan te is, azaz az OO nemhogy nem nehéz, hanem éppen természetes neked!
+        </para>
+        <para>
+            A polártranszformáció segítségével random számokat tudunk kiszámolni. Ezt az algoritmust használja a Java random szán generátor függvénye is. C++ kód:
+        </para>
+        <para>
+            <programlisting language= "c++"><![CDATA[#include <iostream>
+#include <cstdlib>
+#include <cmath>
+#include <ctime>
+
+class PolarGen {
+
+	public:
+
+		PolarGen(); //konstruktor
+
+		~PolarGen(){} //destruktor
+
+		double kovetkezo(); //random lekérés
+
+	private:
+
+		bool nincsTarolt;
+		double tarolt; //random értéke
+
+};
+PolarGen::PolarGen() { //a konstruktor kifejtése
+	nincsTarolt = false;
+	std::srand (std::time(NULL)); //random inicializálás
+};
+double PolarGen::kovetkezo() { //random lekérő függvény kifejtése
+	if (nincsTarolt)
+{
+		double u1, u2, v1, v2, w;
+
+		do{
+			u1 = std::rand () / (RAND_MAX + 1.0); //innentől jön az algoritmus
+			u2 = std::rand () / (RAND_MAX + 1.0);
+			v1 = 2 * u1 - 1;
+			v2 = 2 * u2 - 1;
+			w = v1 * v1 + v2 * v2;
+		    }
+		while (w > 1);
+
+		double r = std::sqrt ((-2 * std::log (w)) / w);
+
+		tarolt = r * v2; 
+		nincsTarolt = !nincsTarolt;
+
+		return r * v1; //idáig tart az algoritmus
+	}
+	
+	else
+	{
+		nincsTarolt = !nincsTarolt; //ha van korábbi random érték, akkor azt adja vissza
+		return tarolt;
+	}
+};
+int main() 
+{
+
+	PolarGen rnd;
+
+	for (int i = 0; i < 10; ++i) std::cout << rnd.kovetkezo() << std::endl; //10 random szám generálása
+
+}]]>
+            </programlisting>
+            Elsősorban létre kell hoznunk egy osztályt, ahol a random számokat fogjuk elkészíteni. Ez kettő részből fog összetevődni:, a <function>public</function>, illetve a <function>private</function> részből. A <function>public</function> részben található elemek elérhetőek a class-on kívül is, viszont a <function>private</function> részben találhatóak csak a class-on belül. A konstruktor csak akkor hajtódik végre, amikor létrehozzuk a <function>PolarGen</function> típusú objektumot. Meg kell jegyezni, hogy ez csak egyszer hajtódik végre, és ez hiában a <function>public</function> részen belül található, többet már nem tudjuk meghívni. A destruktorr hasonlóképpen működik, annyi különbséggel, hogy a program futása végén hajtódik végre. A <function>kovetkezo()</function>-vel fogjuk a random számokat kiszámolni, továbbá ez a függvény fogja tartalmazni nekünk azt az algoritmust, amivel ellneőrizzük, hogy van-e tárolt random számunk, és ha nincs akkor generál kettőt, az egyiket visszaadja, a másikat pedig eltárolja. A konstruktor jelen esetben, ad egy alapértelmezett értéket a <function>nincsTarolt</function> változónak, majd meghívja a <function>srand()</function> függvényt, ami a random számokat fogja generálni. A <function>main</function>-ben létrehozzuk a <function>PolarGen</function> típusú változónkat, ezzel pedig 10 random számot tudunk generálni.
+        </para>
+        <para>
+	Java kód:
+            <programlisting language = "java"><![CDATA[
+public class PolarGenerator
+{
+    boolean nincsTarolt = true;
+    double tarolt;
+    
+    public PolarGenerator()
+    {
+        nincsTarolt = true;
+    }
+    
+    public double kovetkezo() 
+    {
+        if(nincsTarolt)
+        {
+            double u1, u2, v1, v2, w;
+            do{
+                u1 = Math.random();
+                u2 = Math.random();
+                v1 = 2* u1 -1;
+                v2 = 2* u2 -1;
+                w = v1*v1 + v2*v2;
+            } while (w>1);
+            
+            double r = Math.sqrt((-2 * Math.log(w) / w));
+            tarolt = r * v2;
+            nincsTarolt = !nincsTarolt;
+            return r * v1;
+        }
+        else
+        {
+            nincsTarolt = !nincsTarolt;
+            return tarolt;
+        }
+    }
+    
+    public static void main(String[] args)
+    {
+        PolarGenerator g = new PolarGenerator();
+        for (int i = 0; i < 10; ++i)
+        {
+            System.out.println(g.kovetkezo());
+        }
+    }
+}]]>
+            </programlisting>
+            Java-ban az egész forrás egy nagy class része. A C++ kódban tudtuk tömbösíteni a <function>private</function> és <function>public</function> elemeket, itt viszont minden elé ki kell írni, hogy melyik csoporthoz tartozik. Ebben a kódban is megtalálható egy konstruktor, ami a <function>nincsTarolt</function> értékét igazzá definiálja. Végül a main-ben legeneráljuk a random számokat.
+        </para>
+    </section>        
+
+    <section>
+        <title>LZW</title>
+        <para>
+            Valósítsd meg C-ben az LZW algoritmus fa-építését!
+        </para>
+        <para>
+            Az LZW algoritmus egy tömörítő eljárás, amelynek lényege annyi, hogy a bemeneti 0-ákból és 1-ekből egy bináris fát épít. A fát az alapján építi fel, hogy megnézi, hogy van-e 0-ás, vagy 1-es gyermek és ha nincs akkor mindig létrehoz egyet, majd visszaugrik a gyökérre. Ha van, akkor a 0-ás vagy az 1-es gyermekre lép, és addig lépked lefele a fában, ameddig nem talál egy olyan részfát, ahol létre kellene hoznia egy új gyermeket. Ahhoz, hogy ezt a kódot le tudjuk fordítani szükségünk lesz az std_lib_facilities.h include-ra. 
+            <programlisting language = "c++"><![CDATA[
+#include "std_lib_facilities.h"
+#include <iostream>
+#include <string>
+
+string fullCode;
+int tbs;
+int subfak;
+
+
+struct binfa 
+{
+    char kulcs;
+    binfa* bal;
+    binfa* jobb;
+    binfa* szulo;
+};
+
+binfa* createfa(char value, binfa* fszulo) 
+{
+    binfa* fa = new binfa;
+	fa->szulo = fszulo;
+    fa->kulcs = value;
+    fa->bal = NULL;
+    fa->jobb = NULL;
+    return fa;
+}
+
+int insertfa(binfa*& gyoker, int num) 
+{
+    if(fullCode[num] == '0'){
+        if(gyoker->bal == NULL){
+            gyoker->bal = createfa('0', gyoker);
+            num = num+1;
+        }else{
+            num = insertfa(gyoker->bal, num+1);
+        }
+    }else if(fullCode[num] == '1')
+	{
+        if(gyoker->jobb == NULL){
+            gyoker->jobb = createfa('1', gyoker);
+            num = num+1;
+        }else{
+            num = insertfa(gyoker->jobb, num+1);
+        }
+    }
+    return num;
+}
+
+int faLength(binfa* gyoker) 
+{
+    if(gyoker == NULL) 
+	{
+        return 0;
+    }else{
+        return 1+faLength(gyoker->bal)+faLength(gyoker->jobb);
+    }
+}
+
+int faHeight(binfa* gyoker) 
+{
+    if(gyoker == NULL) 
+	{
+        return 0;
+    }else{
+        return 1+max(faHeight(gyoker->bal), faHeight(gyoker->jobb));
+    }
+}
+
+int faAgak(binfa* gyoker) 
+{
+    if(gyoker == NULL) 
+	{
+        return 0;
+    }else if(gyoker->bal == NULL && gyoker->jobb == NULL) 
+	{
+        return 1;
+    }else{
+        return faAgak(gyoker->bal)+faAgak(gyoker->jobb);
+    }
+}
+
+int faAgakSum(binfa* gyoker, int count) 
+{
+    if(gyoker == NULL) 
+	{
+        return count;
+    }else{
+        if(gyoker->bal != NULL && gyoker->jobb != NULL) 
+		{
+            return faAgakSum(gyoker->bal, count+1)+faAgakSum(gyoker->jobb, count+1);
+        }else if(gyoker->bal != NULL) 
+		{
+            return faAgakSum(gyoker->bal, count+1);
+        }else if(gyoker->jobb != NULL) 
+		{
+            return faAgakSum(gyoker->jobb, count+1);
+        }
+    }
+    return count;
+}
+
+int faAgakListazas(binfa* gyoker, int count) 
+{
+    if(gyoker == NULL) 
+	{
+        return count;
+    }else{
+        if(gyoker->bal != NULL && gyoker->jobb != NULL) 
+		{
+            return faAgakListazas(gyoker->bal, count+1)+faAgakListazas(gyoker->jobb, count+1);
+        }else if(gyoker->bal != NULL) 
+		{
+            return faAgakListazas(gyoker->bal, count+1);
+        }else if(gyoker->jobb != NULL) 
+		{
+            return faAgakListazas(gyoker->jobb, count+1);
+        }
+    }
+    string tmp = "";
+    binfa* current = gyoker;
+    while(current != NULL) 
+	{
+        tmp += (current->kulcs);
+        current = current->szulo;
+    }
+	int i;
+    for(i=0; i<tmp.length(); i++) 
+	{
+        if(tmp[tmp.length()-i-1] != '#') 
+		{
+            cout << tmp[tmp.length()-i-1];
+        }
+    }
+    cout << "(" << i-1 << ")" << "\n";
+    return count;
+}
+
+double faAgakSzoras(binfa* gyoker, double count, binfa* base) 
+{
+    if(gyoker == NULL) 
+	{
+        return count;
+    }else{
+        if(gyoker->bal != NULL && gyoker->jobb != NULL) 
+		{
+            return faAgakSzoras(gyoker->bal, count+1, base)+faAgakSzoras(gyoker->jobb, count+1, base);
+        }else if(gyoker->bal != NULL) 
+		{
+            return faAgakSzoras(gyoker->bal, count+1, base);
+        }else if(gyoker->jobb != NULL) 
+		{
+            return faAgakSzoras(gyoker->jobb, count+1, base);
+        }
+    }
+    
+    double avg = tbs;
+    avg /= subfak;
+    return pow(count-avg, 2);
+}
+
+int faSum(binfa* gyoker) 
+{
+    if(gyoker == NULL) 
+	{
+        return 0;
+    }else{
+        char tmp;
+        if(gyoker->kulcs == '#') { tmp = '0'; }
+       else{ tmp = gyoker->kulcs; }
+        int n = tmp - '0';
+        return n+faSum(gyoker->bal)+faSum(gyoker->jobb);
+    }
+}
+
+int main() 
+{
+    string input;
+    getline(cin, input);
+    string code(input);
+	int tordeles = 60;
+    if(code.length() <= 1000)
+	{
+        cout << "Input adatok(Tördelés " << tordeles << " elemenként):\n";
+        for(int i = 0; i < code.length(); i++)
+		{
+            cout << input[i];
+            if(((i+1)%tordeles == 0 && i != 0) || i == code.length()-1) 
+			{
+                cout << "\n";
+            }
+        }
+    }
+
+    binfa* gyoker = createfa('#', NULL);
+    int num = 0;
+    fullCode = code;
+    while(code.length() > num)
+	{
+        num = insertfa(gyoker, num);
+    }
+	cout.precision(9);
+	double avg = faSum(gyoker);
+	double faavg = faAgakSum(gyoker, 0);
+	subfak = faAgak(gyoker);
+	avg /= (faLength(gyoker)-1);
+	tbs = faavg;
+	faavg /= subfak;
+	double sz = faAgakSzoras(gyoker, 0, gyoker);
+    double sz2 = faAgakSzoras(gyoker, 0, gyoker);
+    sz /= subfak;
+    sz2 /= subfak-1;
+    sz = pow(sz, 0.5);
+    sz2 = pow(sz2, 0.5);
+	int l, h;
+    l = faLength(gyoker);
+	h = faHeight(gyoker);
+	cout << "\nA fa ágainak száma: " << subfak << "\n";
+	cout << "A fa ágainak átlagos hossza: " << faavg << "\n";
+	cout << "Az ágak hosszainak szórása: " << sz << "\n";
+    cout << "Az ágak hosszainak korrigált szórása: " << sz2 << "\n";
+    cout << "A fa elemszáma: " << l-1 << " (" << l << ")\n";
+    cout << "A fa magassága: " << h-1 << " (" << h << ")\n";
+    cout << "A fa elemeinek átlaga: " << avg << "\n";
+    if(subfak<=50) 
+	{
+        cout << "\nA fa ágia:\n";
+        faAgakListazas(gyoker, 0);
+    }
+}]]>
+            </programlisting>
+           A kódunk a következőképp épül fel: Elsőnek is deklarálunk néhány dolgot, mely a későbbiekben lesz fontos a számunkra, mint például a fullCode, vagy a subfak. Ezután felépítjük a binfa struktúránkat, ahol van egy kulcsunk, egy jobbra, valamint balra mutatónk, és egy szülő mutatónk. Ezután megmondjuk a programnak, hogy miképp hozza létre a fát, majd létrehozunk egy újabb funkciót ahol a fa beszúrását fogja elvégezni a program. Ezután különböző funkciókat hozunk létre: fa ágainak hossza, magassága, és magukat a faágakat. Ahhoz hogy ezeket igazán meg tudjuk érteni le kell görgetnünk a main részhez, ahol láthatjuk, hogy miket fog kiírni nekünk a program. Próbáltam egyszerű, könnyen értelmezhető neveket adni, így könnyedén lehet társítani az adott mondathoz egy funkciót. Ez feladat volt nekünk Bevezetés a programozásban tárgyból, ezért pont ezeket csináltam meg.
+        </para>
+    </section>        
+        
+    <section>
+        <title>Fabejárás</title>
+        <para>
+            Járd be az előző (inorder bejárású) fát pre- és posztorder is!
+        </para>
+	<para>
+            Tutor: Puskás Csaba Zsolt
+        </para>
+        <para>
+	Ahhoz, hogy nekikezdjünk a feladatnak először is két dolgot kell értelmeznünk. Mi is az az inorder, mi az a posztorder és végül mi az a preorder bejárás? Az inorder bejárásnál elsőnek dolgozzuk fel a bal oldali gyermeket a fában és utána a gyökérelemeket, majd végezetül a jobb oldali gyermeket. Az inorder bejárást használtuk eddig. A posztorder bejárás abban különbözik, hogy elsőnek a bal oldali gyermeket, másodjára a jobb oldali gyermeket, végül pedig a gyökérelemeket dolgozzuk fel. Végezetül a preorder bejárás a gyökérelemekkel kezd, majd a bal és a jobb oldali gyermeket dolgozza fel.
+A kód:
+<programlisting language="c++"><![CDATA[
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <string.h>
+
+#define null NULL
+
+class Binfa
+{
+private:
+	class Node
+	{
+	public:
+		Node(char c='/')
+		{
+			this->c=c;
+			this->left = null;
+			this->right = null;
+		}
+		char c;
+		Node* left;
+		Node* right;
+	};
+	Node* fa;
+	
+    Node *  masol ( Node * elem, Node * regifa ) {
+
+          Node * ujelem = NULL;
+
+          if ( elem != NULL ) {
+               ujelem = new Node ( elem->c );
+
+               ujelem->left =  masol  (elem->left, regifa ) ;
+               ujelem->right =  masol  (elem->right, regifa );
+
+               if ( regifa == elem )
+                    fa = ujelem;
+
+          }
+
+          return ujelem;
+     }
+
+public:
+	Binfa(): fa(&gyoker)
+	{
+
+	}
+	
+    Binfa ( const Binfa & regi ) 
+    {
+        std::cout << "LZWBinFa copy ctor" << std::endl;
+
+        gyoker.left =  masol ( regi.gyoker.left, regi.fa ) ;
+        gyoker.right =  masol ( regi.gyoker.right, regi.fa ) ;
+
+        if ( regi.fa == & ( regi.gyoker ) )
+            fa = &gyoker;
+
+     }
+    
+    Binfa ( Binfa && regi )
+    {
+        std::cout << "LZWBinFa move ctor" << std::endl;
+
+        gyoker.left = regi.gyoker.left;
+        gyoker.right = regi.gyoker.right;
+
+        regi.gyoker.left =   nullptr ;
+        regi.gyoker.right =  nullptr ;
+
+    }
+
+    Binfa& operator= ( const Binfa & regi ) 
+    {
+        std::cout << "LZWBinFa copy ctor" << std::endl;
+
+        gyoker.left =  masol ( regi.gyoker.left, regi.fa ) ;
+        gyoker.right =  masol ( regi.gyoker.right, regi.fa ) ;
+
+        if ( regi.fa == & ( regi.gyoker ) )
+            fa = &gyoker;
+
+    }
+
+    Binfa& operator= (Binfa && regi ) 
+    {
+        std::cout << "LZWBinFa move ctor" << std::endl;
+
+        gyoker.left = regi.gyoker.left;
+        gyoker.right = regi.gyoker.right;
+
+        regi.gyoker.left =   nullptr ;
+        regi.gyoker.right =  nullptr ;
+
+    }
+
+	void operator<<(char c)
+	{
+		if(c=='0')
+		{
+			if(fa->left == null)
+			{
+				fa->left = new Node('0');
+				fa = &gyoker;
+			}
+			else
+			{
+				fa = fa->left;
+			}
+		}
+		else
+		{
+			if(fa->right == null)
+			{
+				fa->right = new Node('1');
+				fa = &gyoker;
+			}
+			else
+			{
+				fa = fa->right;
+			}
+		}
+	}
+	
+	void preorder(Node* elem,int depth=0)
+	{
+		if(elem==null)
+		{
+			return;
+		}
+		if(depth) 
+		{
+			char *spaces;
+			spaces =(char*) malloc(sizeof(char)*depth*2+1);
+			for(int i=0;i<depth;i+=2)
+			{
+				spaces[i]='-';
+				spaces[i+1]='-';
+			}
+			spaces[depth*2]='\0';
+
+			printf("%s%c\n",spaces,elem->c);
+		}
+		else
+		{
+			printf("%c\n",elem->c);
+		}
+		preorder(elem->left,depth+1);	
+		preorder(elem->right,depth+1);
+	}
+
+	void inorder(Node* elem,int depth=0)
+	{
+		if(elem==null)
+		{
+			return;
+		}
+		inorder(elem->left,depth+1);
+		if(depth) 
+		{
+			char *spaces;
+			spaces =(char*) malloc(sizeof(char)*depth*2+1);
+			for(int i=0;i<depth;i+=2)
+			{
+				spaces[i]='-';
+				spaces[i+1]='-';
+			}
+			spaces[depth*2]='\0';
+
+			printf("%s%c\n",spaces,elem->c);
+		}
+		else
+		{
+			printf("%c\n",elem->c);
+		}	
+		inorder(elem->right,depth+1);
+	}
+
+	void postorder(Node* elem,int depth=0)
+	{
+		if(elem==null)
+		{
+			return;
+		}
+		postorder(elem->left,depth+1);
+		postorder(elem->right,depth+1);
+		if(depth) 
+		{
+			char *spaces;
+			spaces =(char*) malloc(sizeof(char)*depth*2+1);
+			for(int i=0;i<depth;i+=2)
+			{
+				spaces[i]='-';
+				spaces[i+1]='-';
+			}
+			spaces[depth*2]='\0';
+
+			printf("%s%c\n",spaces,elem->c);
+		}
+		else
+		{
+			printf("%c\n",elem->c);
+		}	
+	}
+
+	void destroy_tree(Node* elem)
+	{
+		if(elem==null)
+		{
+			return;
+		}
+		destroy_tree(elem->left);
+		destroy_tree(elem->right);
+		if(elem->c!='/') delete elem;
+	}
+
+	Node gyoker;
+
+};
+
+void usage()
+{
+	printf("Használat: ./binfa KAPCSOLÓ\n");
+	printf("Az KAPCSOLÓ lehet:\n");
+	printf("--preorder\tA bináris fa preorder bejárása\n");
+	printf("--inorder\tA bináris fa inorder bejárása\n");
+	printf("--postorder\tA bináris fa postorder bejárása\n");
+}
+
+int main(int argc, char** argv)
+{
+	srand(time(0));
+	Binfa bfa,bfa2;
+	for(int i=0;i<100;i++)
+	{
+		int x=rand()%2;
+		if(x)
+		{
+			bfa<<'1';
+            bfa2<<'0';
+		}
+		else
+		{
+			bfa<<'0';
+            bfa2<<'1';
+		}
+	}
+	if(argc == 2)
+	{
+		if(strcmp(argv[1],"--preorder")==0)
+		{
+            std::cout<<"bfa"<<std::endl;
+			bfa.preorder(&bfa.gyoker);
+            std::cout<<"bfa2"<<std::endl;
+            bfa2.preorder(&bfa.gyoker);
+		}
+		else if(strcmp(argv[1],"--inorder")==0)
+		{
+            std::cout<<"bfa"<<std::endl;
+			bfa.inorder(&bfa.gyoker);
+            std::cout<<"bfa2"<<std::endl;
+            bfa2.inorder(&bfa.gyoker);
+		}
+		else if(strcmp(argv[1],"--postorder")==0)
+		{
+            std::cout<<"bfa"<<std::endl;
+			bfa.postorder(&bfa.gyoker);
+            std::cout<<"bfa2"<<std::endl;
+            bfa2.postorder(&bfa.gyoker);
+		}
+		else
+		{
+			usage();
+		}
+	}
+	else
+	{
+		usage();
+	}
+
+    bfa2=std::move(bfa);
+
+    bfa2.preorder(&bfa2.gyoker);
+
+	bfa.destroy_tree(&bfa.gyoker);
+    bfa2.destroy_tree(&bfa.gyoker);
+	return 0;
+}]]></programlisting> 
+        </para>
+    </section>        
+                        
+    <section>
+        <title>Tag a gyökér</title>
+        <para>
+            Az LZW algoritmust ültesd át egy C++ osztályba, legyen egy Tree és egy beágyazott Node
+            osztálya. A gyökér csomópont legyen kompozícióban a fával!
+        </para>
+        <para>
+
+<programlisting language="c++"><![CDATA[class elem
+{
+	public:
+	int adat;
+	int szint;
+	elem* jobb;
+	elem* bal;
+	elem(int,int); 
+
+};
+
+elem :: elem(int a,int sz)
+{
+	adat= a;
+	bal=NULL;
+	jobb=NULL;
+	szint= sz+1;
+}
+
+class tree{
+	public:
+	elem* gyoker;
+	tree ( tree && regi )
+	{
+          cout << "LZWBinFa move ctor" << endl;
+	  gyoker = regi.gyoker;
+          regi.gyoker = nullptr;
+	}
+	tree(elem*);
+
+};
+
+tree :: tree(elem* root)
+{
+	gyoker = root;
+}]]></programlisting> 
+        </para>
+    </section>        
+                
+    <section>
+        <title>Mutató a gyökér</title>
+        <para>
+            Írd át az előző forrást, hogy a gyökér csomópont ne kompozícióban, csak aggregációban legyen a 
+            fával!
+        </para>
+        <para>
+		A fára való hivatkozás egy gyökérelemre mutató mutatóval történik. Ilyen esetben az a probléma merül fel, hogy a fa nem egy egész objektumként jön létre, így a másolás és a mozgatás bonyolultabban történik.
+	<programlisting language="c++"><![CDATA[
+class elem
+{
+	public:
+	int adat;
+	int szint;
+	elem* jobb;
+	elem* bal;
+	elem(int,int); 
+
+};
+
+elem :: elem(int a,int sz)
+{
+	adat= a;
+	bal=NULL;
+	jobb=NULL;
+	szint= sz+1;
+}]]></programlisting> 
+        </para>
+    </section>                     
+
+    <section>
+        <title>Mozgató szemantika</title>
+        <para>
+            Írj az előző programhoz mozgató konstruktort és értékadást, a mozgató konstruktor legyen a mozgató
+            értékadásra alapozva!
+        </para>
+	<para>
+            Tutor: Ádám Petra
+        </para>
+	<para>
+	Egy új gyökérelemet kell állítanunk a tree-re, a régi gyökérelemet pedig nullpointerre állítjuk, így a fa objektum nem lesz már a program számára hivatkozható.	  
+	</para>
+<programlisting language="c++"><![CDATA[
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <string.h>
+
+#define null NULL
+
+class Binfa
+{
+private:
+	class Node
+	{
+	public:
+		Node(char c='/')
+		{
+			this->c=c;
+			this->left = null;
+			this->right = null;
+		}
+		char c;
+		Node* left;
+		Node* right;
+	};
+	Node* fa;
+	
+    Node *  masol ( Node * elem, Node * regifa ) {
+
+          Node * ujelem = NULL;
+
+          if ( elem != NULL ) {
+               ujelem = new Node ( elem->c );
+
+               ujelem->left =  masol  (elem->left, regifa ) ;
+               ujelem->right =  masol  (elem->right, regifa );
+
+               if ( regifa == elem )
+                    fa = ujelem;
+
+          }
+
+          return ujelem;
+     }
+
+public:
+	Binfa(): fa(&gyoker)
+	{
+
+	}
+	
+    Binfa ( const Binfa & regi ) 
+    {
+        std::cout << "LZWBinFa copy ctor" << std::endl;
+
+        gyoker.left =  masol ( regi.gyoker.left, regi.fa ) ;
+        gyoker.right =  masol ( regi.gyoker.right, regi.fa ) ;
+
+        if ( regi.fa == & ( regi.gyoker ) )
+            fa = &gyoker;
+
+     }
+    
+    Binfa ( Binfa && regi )
+    {
+        std::cout << "LZWBinFa move ctor" << std::endl;
+
+        gyoker.left = regi.gyoker.left;
+        gyoker.right = regi.gyoker.right;
+
+        regi.gyoker.left =   nullptr ;
+        regi.gyoker.right =  nullptr ;
+
+    }
+
+    Binfa& operator= ( const Binfa & regi ) 
+    {
+        std::cout << "LZWBinFa copy ctor" << std::endl;
+
+        gyoker.left =  masol ( regi.gyoker.left, regi.fa ) ;
+        gyoker.right =  masol ( regi.gyoker.right, regi.fa ) ;
+
+        if ( regi.fa == & ( regi.gyoker ) )
+            fa = &gyoker;
+
+    }
+
+    Binfa& operator= (Binfa && regi ) 
+    {
+        std::cout << "LZWBinFa move ctor" << std::endl;
+
+        gyoker.left = regi.gyoker.left;
+        gyoker.right = regi.gyoker.right;
+
+        regi.gyoker.left =   nullptr ;
+        regi.gyoker.right =  nullptr ;
+
+    }
+
+	void operator<<(char c)
+	{
+		if(c=='0')
+		{
+			if(fa->left == null)
+			{
+				fa->left = new Node('0');
+				fa = &gyoker;
+			}
+			else
+			{
+				fa = fa->left;
+			}
+		}
+		else
+		{
+			if(fa->right == null)
+			{
+				fa->right = new Node('1');
+				fa = &gyoker;
+			}
+			else
+			{
+				fa = fa->right;
+			}
+		}
+	}
+	
+	void preorder(Node* elem,int depth=0)
+	{
+		if(elem==null)
+		{
+			return;
+		}
+		if(depth) 
+		{
+			char *spaces;
+			spaces =(char*) malloc(sizeof(char)*depth*2+1);
+			for(int i=0;i<depth;i+=2)
+			{
+				spaces[i]='-';
+				spaces[i+1]='-';
+			}
+			spaces[depth*2]='\0';
+
+			printf("%s%c\n",spaces,elem->c);
+		}
+		else
+		{
+			printf("%c\n",elem->c);
+		}
+		preorder(elem->left,depth+1);	
+		preorder(elem->right,depth+1);
+	}
+
+	void inorder(Node* elem,int depth=0)
+	{
+		if(elem==null)
+		{
+			return;
+		}
+		inorder(elem->left,depth+1);
+		if(depth) 
+		{
+			char *spaces;
+			spaces =(char*) malloc(sizeof(char)*depth*2+1);
+			for(int i=0;i<depth;i+=2)
+			{
+				spaces[i]='-';
+				spaces[i+1]='-';
+			}
+			spaces[depth*2]='\0';
+
+			printf("%s%c\n",spaces,elem->c);
+		}
+		else
+		{
+			printf("%c\n",elem->c);
+		}	
+		inorder(elem->right,depth+1);
+	}
+
+	void postorder(Node* elem,int depth=0)
+	{
+		if(elem==null)
+		{
+			return;
+		}
+		postorder(elem->left,depth+1);
+		postorder(elem->right,depth+1);
+		if(depth) 
+		{
+			char *spaces;
+			spaces =(char*) malloc(sizeof(char)*depth*2+1);
+			for(int i=0;i<depth;i+=2)
+			{
+				spaces[i]='-';
+				spaces[i+1]='-';
+			}
+			spaces[depth*2]='\0';
+
+			printf("%s%c\n",spaces,elem->c);
+		}
+		else
+		{
+			printf("%c\n",elem->c);
+		}	
+	}
+
+	void destroy_tree(Node* elem)
+	{
+		if(elem==null)
+		{
+			return;
+		}
+		destroy_tree(elem->left);
+		destroy_tree(elem->right);
+		if(elem->c!='/') delete elem;
+	}
+
+	Node gyoker;
+
+};
+
+void usage()
+{
+	printf("Használat: ./binfa KAPCSOLÓ\n");
+	printf("Az KAPCSOLÓ lehet:\n");
+	printf("--preorder\tA bináris fa preorder bejárása\n");
+	printf("--inorder\tA bináris fa inorder bejárása\n");
+	printf("--postorder\tA bináris fa postorder bejárása\n");
+}
+
+int main(int argc, char** argv)
+{
+	srand(time(0));
+	Binfa bfa,bfa2;
+	for(int i=0;i<100;i++)
+	{
+		int x=rand()%2;
+		if(x)
+		{
+			bfa<<'1';
+            bfa2<<'0';
+		}
+		else
+		{
+			bfa<<'0';
+            bfa2<<'1';
+		}
+	}
+	if(argc == 2)
+	{
+		if(strcmp(argv[1],"--preorder")==0)
+		{
+            std::cout<<"bfa"<<std::endl;
+			bfa.preorder(&bfa.gyoker);
+            std::cout<<"bfa2"<<std::endl;
+            bfa2.preorder(&bfa.gyoker);
+		}
+		else if(strcmp(argv[1],"--inorder")==0)
+		{
+            std::cout<<"bfa"<<std::endl;
+			bfa.inorder(&bfa.gyoker);
+            std::cout<<"bfa2"<<std::endl;
+            bfa2.inorder(&bfa.gyoker);
+		}
+		else if(strcmp(argv[1],"--postorder")==0)
+		{
+            std::cout<<"bfa"<<std::endl;
+			bfa.postorder(&bfa.gyoker);
+            std::cout<<"bfa2"<<std::endl;
+            bfa2.postorder(&bfa.gyoker);
+		}
+		else
+		{
+			usage();
+		}
+	}
+	else
+	{
+		usage();
+	}
+
+    bfa2=std::move(bfa);
+
+    bfa2.preorder(&bfa2.gyoker);
+
+	bfa.destroy_tree(&bfa.gyoker);
+    bfa2.destroy_tree(&bfa.gyoker);
+	return 0;
+}]]></programlisting> 
+    </section>                     
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+</chapter>                
+

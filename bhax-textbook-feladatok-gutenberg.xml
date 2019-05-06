@@ -1,0 +1,97 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Gutenberg!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+   <section>
+        <title>Olvasónapló BRIAN W. KERNIGHAN és DENNIS M. RITCHIE A C programozási nyelv című könyvéből</title>
+        <para>
+                <programlisting><![CDATA[1.	fejezet: Alapismeretek
+Az első fejezetben megismerkedhetünk az alapokkal. Például, hogy hogyan írhatunk ki egy „Halló mindenki” parancsot a C nyelvben. Itt találkozhatunk a különböző változó típusokkal, mint például: int, float, char, short, long, double. Megismerkedhetünk a különböző ciklusokkal, a for-ral és a while-al és még ezen kívül nagyon sok dologgal, ami elengedhetetlen az alapok elindításához. Megismerjük a programok felépítését, az elejétől a végéig, hogy mikből állhat, és mik azok a fontos dolgok, amelyek szükségesek egy program felépítéséhez, majd a lefordításához. Itt már betekintést kaphatunk az if-ek világába, de ez majd csak később lesz bővebben kifejtve.
+
+2.	fejezet: Típusok, operátorok és kifejezések
+Ebben a fejezetben megismerjük részletesebben az első fejezetben található változókat, megismerkedhetünk a deklarációk világával, továbbá megismerjük az állandókat, és azt, hogy azok miként szerepelhetnek a kódunkban és melyik állandó milyen végeredményt ad majd végeredményül. A logikai operátorokról ’<’ ’>’ ’<=’ ’>=’ ’==’ is kapunk lényegesen kifejtett ismertetőt.
+
+3.	fejezet: Vezérlési szerkezetek
+A harmadik fejezet elején az utasításokra kapunk egy példát, hogy egy-egy sor mitől válhat utasítássá. A későbbiekben az if-ek bővített változatát ismerhetjük meg az else és az else if társaságában. Néhány újabb utasítással is megismerkedhetünk, ilyen például a switch, amely case-kre bontva nézi meg a bejövő értékeket. Ezután a ciklusokra kerül a sor és azzal kapcsolatosan bővíthetjük tudásunkat. A ciklusoknál bejönnek újabb utasítások: break, continue, goto. Megismerhetjük ezeknek a működését és hasznosságát (vagy épp haszontalanságát).
+
+4.	fejezet: Függvények és a program szerkezete
+Ebben a részben, ahogy a fejezet címéből is adódik, a függvényekkel bővíthetjük tudásunkat. A függvények felépítéséről és működéséről olvashatunk az első pár részben. Majd a későbbiekben arról, hogy a program hogyan is állhat össze, de itt már sokkal részletesebben, mint az első fejezetben. Nagyon sok új fogalmat ismerhetünk meg a fejezet olvasása során. Szóba kerülnek például a változók inicializálása, a rekurzió és más hasonló fogalmak.
+
+5.	fejezet: Mutatók és tömbök
+Az ötödik fejezetben, szintén a címről lehet következtetni a tartalomra. Az ötödik fejezet a mutatókról és a tömbökről szól. Megtudhatjuk, hogy hogyan működnek a mutatók, a kódban hogyan láthatjuk ezeket viszont és, hogy hogyan lehet szakszerűen használni ezeket, valamint a gyakorlatban, milyen előnyei vannak a mutatók használatának. Tovább haladva megismerkedhetünk a tömbökkel, amelyeknél szintén megtudjuk, hogy hogyan létrehozható a tömb, és hogy igazából mit is takar az a tömb. A későbbiekben a mutatókat és a tömböket hozzuk egymással kapcsolatba, valamint a mutatókat az elején tanultakkal (például a függvényekkel) is kapcsolatba hozzuk.
+
+6.	fejezet: Struktúrák
+A struktúrák a grafikus ábrázoláshoz használhatóak. Itt ismét egy újabb definícióval ismerkedhetünk meg, a struct definíciójával. A továbbiakban az előző fejezetekben elsajátításához kötjük hozzá a struktúrákat, így jöhetnek létre például struktúratömbök, vagy struktúrákat kijelölő mutatók.
+
+7.	fejezet: Adatbevitel és adatkivitel
+A hetedik fejezetben részletes leírást kapunk az inputról és az outputról. Bő leírást kapunk arról, hogy mi a standard input, illetve mi a standart output. Megismerhetünk olyan függvényeket, melyek adatbevitelre kényszerítik a felhasználót a standard inputról. Ilyen függvény például a scanf függvény. Outputnál megtanulhatjuk a hibakezelést a stderr és az exit segítségével, valamint még számos könyvtári függvényről kaphatunk részletes ismertetőt, leírást.
+
+8.	fejezet: Kapcsolódás az UNIX operációs rendszerhez
+Ebben a fejezetben megismerhetjük, hogy milyen kódokat használhatunk az UNIX operációs rendszer kezeléséhez egy adott programon belül. Számos rendszerhívást megismerhetünk. Majd nagyon sok olyan információval és példával szolgál a könyv, amelyet a saját könyvünk megírásához is alapul tudunk venni, amelyet készítünk.
+
+Kiértékelés
+A könyv kiolvasása bizonyítottan növelte a lexikális tudásomat, hiszen nagyon sok új információt ismertem meg ezáltal, nagyon sok dologra rámutatott amiket nem tudtam. Egyszeri elolvasásra voltak benne olyan részek, melyek még nem igazán rögzültek bennem, de hiszem, hogy ezt a könyvet a későbbiekben is elő fogom venni, mert rendkívül jól vannak benne megfogalmazva az egyes részek és a példákkal, valamint a fejezetek végén lévő gyakorló feladatokkal folyamatosan tudjuk ellenőrizni az előre haladásunkat egy-egy fejezet kiolvasása után.]]></programlisting>
+        </para>
+    </section>  
+   <section>
+        <title>Olvasónapló Juhász István Magas Szintű Programozási Nyelvek 1 című könyvéből</title>
+        <para>
+                <programlisting><![CDATA[1.2. Alapfogalmak
+A programozási nyelveknek három szintje van. A gépi nyelv, az Assembly szintű nyelvek és a magas szintű nyelvek.
+Forrásprogram: Magas szintű nyelven megírt program.
+Fordítóprogram: Forrásprogramból gépi kódú programot készít, amelynek a lépései a következők: 
+1.	lexikális elemzés, 
+2.	szintaktikai elemzés, 
+3.	szemantikai elemzés, 
+4.	kódgenerálás.
+Interpreter : Nem hoz létre tárgykódot, utasításként értelmezi és végrehajtja a forrásprogramot
+
+1.3.	Nyelvek osztályozása
+A nyelveket három részre bonthatjuk. Az első nagyobb rész az imperatív nyelvek, a második nagyobb rész a deklaratív nyelvek és az utolsó az egyéb nyelvek.
+Az imperatív nyelvekre a következő tulajdonságok jellemzőek: 
+•	algoritmikus nyelvek, 
+•	utasítások sorozatára épülnek fel, 
+•	a fő eszköze a változók, 
+•	a Neumann-architektúrát alkalmazza. 
+Két alcsoportja van: eljárásorientált nyelvek és az objektumorientált nyelvek.
+A deklaratív nyelvek tulajdonságai: 
+•	nem algoritmikus nyelv, 
+•	a problémát megadjuk, a megoldása pedig a nyelvi implementációkba van beépítve, 
+•	a deklaratív nyelvnél nincs sajnos lehetőségünk memóriaműveletekre. 
+Ennek is van kettő alcsoportja: a funkcionális nyelvek és a logikai nyelvek.
+Az utolsó csoportba pedig azok a nyelvek kerülnek, amelyek „egyéb” jelzővel vannak ellátva, tehát egyik kategóriába sem sorolhatóak be.]]></programlisting>
+        </para>
+    </section>  
+   <section>
+        <title>Olvasónapló a BME C++ könyvből</title>
+        <para>
+                <programlisting><![CDATA[1. C++ nem objektum-orientált újdonságai
+A C++ nyelv a C nyelv objektum-orientált változata ezért is van az, hogy a C++ programok többsége lefordul C fordítóval is. A C++ első verziójának a neve C with class volt, ami utalt az objektum-orientáltságra. A fejezet kitér azokra a gyengeségekre, amelyek a C nyelvben nem voltak még benne, de a C++-ban úgymond javítva lettek.
+1.	míg C-ben, ha nem írunk paramétert, akkor korlátlan számú paramétert használhatunk, C++-ban viszont azt jelenti, hogy nincs paraméter, a C++-ban a végtelen számú paramétert a ... beírásával tudjuk elérni.
+2.	a C-ben kihagyhatjuk a visszatérési értékek típusának a meghatározását, mert intnek fogja érzékelni, C++-ban viszont nem fog lefordulni a programunk.
+3.	a main függvénynél a C++-ban már nem szükséges odaírni a végére a return-t, viszont a C-ben igen.
+4.	C-ben már elérhetővé vált a bool funkció, amivel true és false értékeket deklarálhatunk.
+5.	C++-ban használható már a wchar_t funkció, amivel stringeket tudunk reprezentálni. Ez C-ben csak bizonyos includeok használatával érhető el.
+Ezen kívül még számtalan újítás érkezett a C++-hoz, amit a fejezetben részletesen el is olvashatunk.
+
+2. Osztályok és objektumok
+Az objektumorientáltság 3 alapelve:
+1.	egységbezárás. Olyan struktúrák, melyek az adatokat és a műveleteket tárolják.
+2.	adatrejtés. Nem szabad hagyni, hogy az osztályon kívülről olyan műveleteket hajtsunk végre, amelyek inkonzisztensé teszik az osztályt.
+3.	behelyettesítés. Lehetővé teszi, hogy speciáli sosztályt használjunk ott, ahol egyébként általánosabb osztályt használunk.
+3. Operátorok és túlterhelésük
+Operátor túlterheléshez fordulhatunk, ha beépített típusokkal olyat is szeretnénk értelmezni, ami nem része a nyelvnek. Az operátorok kiértékelésének a sorrendjét a C++ nyelv táblázata határozza meg. Az operátor felfogható speciális függvényként, azzal a különbséggel, hogy a kiértékelés szabályrendszer alapján történik.
+4. C++ sablonok
+A C++ nyelvben lehetőségünk nyílik arra, hogy sablonokat használjunk. Ezekre néha szükség is van, hogy az osztályokat vagy a függvényeket általánosabb módon tudjuk definálni. Például veszünk egy függvényt, amit definálunk de szeretnénk, hogy int-ként és double-ként is működjön. Használhatjuk úgy, hogy lemásoljuk a funkciót, majd ahol int volt oda már double-t írunk. Ez a módszer nem hatékony, ezért helyette sémákat használhatunk. A használni kívánt típust sablonapraméterként adhatjuk meg. Ezt a módszert az osztályoknál is alkalmazhatjuk.
+5. Argumentumfüggő névfeloldás
+Az argumentumfüggő névfeloldás lényege, hogy ha van egy névterünk akkor, a benne lévő X osztályú objektumot ki kell íratnunk egy hatókör operátorral, hogy melyik névtérből való. Az f függvény esetén viszont nincs szükségünk erre, mert paraméterként adhatjuk neki az objektumot. A fordító az általunk megadott névtérben fog keresni, ahol megtalálja az f függvényt.
+6. Típuskonverziók
+A C++-ban található típuskonverzió hasonlít a C-ben ismert típuskonverzióhoz, de a C++-ban való használata sokkal biztonságosabb, továbbá megjelentek objektumorientáltságot figyelembe veőv konverziók is.
+]]></programlisting>
+        </para>
+    </section>      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+</chapter>                

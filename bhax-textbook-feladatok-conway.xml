@@ -1,0 +1,106 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Conway!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title>Hangyaszimulációk</title>
+        <para>
+            Írj Qt C++-ban egy hangyaszimulációs programot, a forrásaidról utólag reverse engineering jelleggel
+            készíts UML osztálydiagramot is!
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://bhaxor.blog.hu/2018/10/10/myrmecologist">https://bhaxor.blog.hu/2018/10/10/myrmecologist</link>
+        </para>
+        <para>
+            Megoldás forrása: ../Hello_conway/hangyak        
+        </para>
+	<para>
+		Tutor: Ádám Petra	
+	</para>
+        <para>
+		Ha a mandelbrotnál már telepítettük a Qt-t, akkor ismerős lehet számunkra, viszont itt ügyelni kell arra, hogy 6.2-nél újabb verziójú Qt-t használjunk, különben nem fog jól működni a kódunk. Biológiai szempontból érdekes ez a kód, mert a hangyák vonulását szimulálja. A kódban meg tudjuk adni, hogy milyen irányban haladjanak a hangyák. Feromont húznak maguk után, így ha egy hangya találkozik egy feromonnal akkor annak az irányába kezd el menni. A működési elve annyi, hogy egy classban van deklarálva egy hangya 3 tulajdonsága. Ezt a class-t sokszorosítva több hangyát kaphatunk. Egy másik osztályban kirajzoljuk a hangyákat, egy harmadikban pedig mozgatjuk azokat.
+	<programlisting>	
+    QCommandLineOption szeles_opt ( {"w","szelesseg"}, "Oszlopok (cellakban) szama.", "szelesseg", "200" );
+    QCommandLineOption magas_opt ( {"m","magassag"}, "Sorok (cellakban) szama.", "magassag", "150" );
+    QCommandLineOption hangyaszam_opt ( {"n","hangyaszam"}, "Hangyak szama.", "hangyaszam", "100" );
+    QCommandLineOption sebesseg_opt ( {"t","sebesseg"}, "2 lepes kozotti ido (millisec-ben).", "sebesseg", "100" );
+    QCommandLineOption parolgas_opt ( {"p","parolgas"}, "A parolgas erteke.", "parolgas", "8" );
+    QCommandLineOption feromon_opt ( {"f","feromon"}, "A hagyott nyom erteke.", "feromon", "11" );
+    QCommandLineOption szomszed_opt ( {"s","szomszed"}, "A hagyott nyom erteke a szomszedokban.", "szomszed", "3" );
+    QCommandLineOption alapertek_opt ( {"d","alapertek"}, "Indulo ertek a cellakban.", "alapertek", "1" );
+    QCommandLineOption maxcella_opt ( {"a","maxcella"}, "Cella max erteke.", "maxcella", "50" );
+    QCommandLineOption mincella_opt ( {"i","mincella"}, "Cella min erteke.", "mincella", "2" );
+    QCommandLineOption cellamerete_opt ( {"c","cellameret"}, "Hany hangya fer egy cellaba.", "cellameret", "4" );
+	</programlisting>
+		A fent látható bemeneti értékekkel be lehet állítani, hogy milyen széles legyen, milyen magas, hány hangyával, milyen sebességgel, stb.. a szimulációnk. A sor végén található számértékek az alapértelmezett értékek. 
+        </para>
+	<para>
+		Ahhoz, hogy megkapjuk a futtatható fájlunkat több fájlra is lesz szükségünk. A .h fájlokra, a .cpp fájlokra és a .pro fájlokra. Ha ezek megvannak akkor a Qt-val egy qmake paranccsal létrehozhatjuk a Makefile-unkat, amit végül a make paranccsal egy programmá alakíthatunk, amit pedig egyszerűen csak a ./ paranccsal futtathatunk is. Persze a fent említett bemeneti értékeket állítgathatjuk ízlésünk szerint.
+	</para>
+	<mediaobject>
+		<imageobject condition="print"><imagedata fileref="./Hello_conway/hangyak/hangyak.png" format="png"/></imageobject>	
+	</mediaobject>
+	<para>
+		A diagrammot, a Visual Paradigm nevű programmal készítettem el.
+	</para>
+	<mediaobject>
+		<imageobject condition="print"><imagedata fileref="./Hello_conway/hangyak/diagram.png" format="png"/></imageobject>	
+	</mediaobject>
+    </section>        
+    <section>
+        <title>Java életjáték</title>
+        <para>
+            Írd meg Java-ban a John Horton Conway-féle életjátékot, 
+            valósítsa meg a sikló-kilövőt!
+        </para>
+        <para>
+            Megoldás forrása: ../Hello_conway/javaeletjatek            
+        </para>
+        <para>
+	Kettő egyszerű paranccsal már el is érhetjük, hogy a forrásunk lefusson és elemezni tudjuk a játékot.
+		<programlisting>javac Sejtautomata.java
+java Sejtautomata
+		</programlisting>
+	Ez a program tulajdonképpen egy sejtautomata, amelyet Melvin Conway alkotott meg. (Ezért is lett ez a fejezet címe.) A sejtautomatában megadhatunk feltételeket a sejtek életben maradásához, születéséhez és halálozásához. A feltételek a szimulációnkban teljesülni fognak, így megfigyelhetjük a sejtjeink miként születnek, miként élnek és miként halnak meg. A Conway féle sejtautomatának 3 szabálya van: 1. Egy sejt csak akkor maradhat életben, ha 2 vagy 3 szomszédja van. 2. Ha egy sejtnek 3-nál több szomszédja van, akkor túlnépesedés miatt meghal, viszont ha 2-nél kevesebb szomszédja van akkor pedig az elszigetelődés miatt fog meghalni. 3. Egy sejt akkor születik meg, ha egy üres cella mellett 3 szomszéd van.
+        </para>
+	<mediaobject>
+		<imageobject condition="print"><imagedata fileref="./Hello_conway/javaeletjatek/javaeletjatek.png" format="png"/></imageobject>	
+	</mediaobject>   
+    </section>        
+    <section>
+        <title>Qt C++ életjáték</title>
+        <para>
+            Most Qt C++-ban!
+        </para>
+        <para>
+            Megoldás forrása: ../Hello_conway/eletjatek          
+        </para>
+        <para>
+            Ez a program az előzőnek a C++ változata. Gyakorlatilag populációk kialakulását és vándorlását szimulálhatjuk a program segítségével. Ha többen kezdenek lenni egy "kolóniában" akkor elkezdenek vándorolni, majd új kolóniákat alapítanak. Ez ugye az előzőben olvasható szabályok által kerül lebonyolításra.
+        </para>         
+	<para>
+		Ahhoz, hogy megkapjuk a futtatható fájlunkat több fájlra is lesz szükségünk. A .h fájlokra, a .cpp fájlokra és a .pro fájlokra. Ha ezek megvannak akkor a Qt-val egy qmake paranccsal létrehozhatjuk a Makefile-unkat, amit végül a make paranccsal egy programmá alakíthatunk, amit pedig egyszerűen csak a ./ paranccsal futtathatunk is.
+	</para>
+	<mediaobject>
+		<imageobject condition="print"><imagedata fileref="./Hello_conway/eletjatek/eletjatek.png" format="png"/></imageobject>	
+	</mediaobject>   
+    </section>        
+    <section>
+        <title>BrainB Benchmark</title>
+        <para>
+        </para>
+        <para>
+            Megoldás forrása: ../Hello_conway/BrainB            
+        </para>
+        <para>
+            Ez a program leginkább az esportolók mérésére szolgál. Az esport széles körében is szűkítenünk kell inkább a MOBA játékosok felé az invervallumunkat, ugyanis az FPS, vagy más típusú játékosokra nem igazán jöhetnek ki kimagasló eredmények. Ezt mindjárt meg is értjük, hogy miért. A program működése annyi, hogy 10 percen keresztül rajta kell tartanunk az egerünket a "karakterünkön". Ezt a karaktert egy külön osztályban határozzuk meg. A szimuláció közben különböző zavaró tényezők jelennek meg és tűnnek el. Lehet, hogy a karakterünk előtt jelenik meg az a bizonyos zavaró tényező, de lehet, hogy a karakterünk mögött. Jó példa lehet erre a League of Legends, vagy a Dota 2-ben kialakult Teamfightok, ahol egy tömeges harc alakul ki és továbbra is tudnunk kell a karakterünk hollétéről, vagy éppen az egeret az ellenséges hősön, vagy a szövetséges hősön kell tartani (attól függően, hogy támadunk, vagy healelni akarunk) A program a futás közben adatokat gyűjt, melyet a program bezárásakor, vagy a program végén egy külön fájlba menti ki.
+        </para>           
+	<mediaobject>
+		<imageobject condition="print"><imagedata fileref="./Hello_conway/brainb/brainb.png" format="png"/></imageobject>	
+	</mediaobject> 
+    </section>        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+</chapter>                

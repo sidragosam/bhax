@@ -106,4 +106,12 @@
             Véglegesítés az 1.0-ás verzióra
         </revremark>
     </revision>
+    <revision>
+        <revnumber>1.1</revnumber>
+        <date>2019-05-07</date>
+        <authorinitials>sidragosam</authorinitials>
+        <revremark>
+            Hiányosságok pótlása.
+        </revremark>
+    </revision>
 </revhistory>

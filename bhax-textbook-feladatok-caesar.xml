@@ -6,7 +6,7 @@
         </keywordset>
     </info>
     <section>
-        <title><type>int ***</type> háromszögmátrix</title>
+        <title><type>double **</type> háromszögmátrix</title>
         <para>
            
         </para>
@@ -72,15 +72,17 @@ main ()
     return 0;
 }
 
-]]>           
+]]>          
         </programlisting>  
-
-        </para>
-        <para>
-            A háromszögmátrix olyan kvadratikus, azaz négyzetes mátrix (kvadratikus mátrix: olyan mátrix, amelyben a sorainak és oszlopainak a száma megegyezik), melynek a főátlója alatt, vagy felett csupa nulla szerepel.
-        </para>
+	</para>
+	<mediaobject>
+		<imageobject condition="print"><imagedata fileref="./Hello_caesar/matrix/doublecscs.png" format="png"/></imageobject>	
+	</mediaobject>      
 	<para>
-		A malloc függvény miatt legfelül az stdlib.h headert includeolni kell. Ezután következik a deklaráció. Deklarálunk egy double típusú pointerre mutató pointert. 
+	Kép forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/blob/master/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/img/doublecscs.png">Bátfai Norbert</link>
+	</para>
+        <para>
+            A háromszögmátrix olyan kvadratikus, azaz négyzetes mátrix (kvadratikus mátrix: olyan mátrix, amelyben a sorainak és oszlopainak a száma megegyezik), melynek a főátlója alatt, vagy felett csupa nulla szerepel. A malloc függvény miatt legfelül az stdlib.h headert includeolni kell. Ezután következik a deklaráció. Deklarálunk egy double típusú pointerre mutató pointert. 
 Az if-es részben a malloc függvényt használjuk, ami helyet foglal a memóriában és egy pointert ad vissza. A malloc megkapja, hogy mekkora területet foglaljon le nr*8, ami esetünkben 5*8, azaz 40 bájt. Az if-el vizsgáljuk, hogy sikeresen megtörtént-e a helyfoglalás és, hogy a malloc visszaad-e a double*-okra egy mutatót. Ha sikeres volt, akkor a program továbbhalad, ha viszont nem volt sikeres, akkor kilép a programból. A következő szakaszban egy for ciklust látunk, ami 0-tól nr-ig megy, ami esetünkben 0-tól 5-ig. Ezen belül memóriát foglalunk a tm[i]-edik elemének (az elsőnek 8 bájtot, aztán 16-ot, 24-et és így tovább), amiről visszad a malloc egy pointert. Persze itt is ellenőrizve van, hogy sikeres-e a helyfoglalás és pointer létrehozás. Elérkeztünk a mátrixunk megszerkesztéséhez. Két egymásba ágyazott for ciklus segítségével tudunk végigmenni az elemeken. Itt feltöltjük a mátrixot, majd a következő, szintén egymásba ágyazott for ciklus segítségével íratjuk ki mátrix értékeit. Láthatjuk, hogy a 4. sorban lévő értékeket, hogyan változtathatjuk meg. Ezután újra kiíratjuk a mátrixunkat és futtatás után kiderül, hogy tényleg megváltoztak az utolsó sorban az értékek. A program legvégén érünk el a feladat leírásában is említett free függvényhez. Ennek segítségével tudjuk felszabadítani már korábban tm által lefoglalt lefoglalt memóriát. 
         </para>
  

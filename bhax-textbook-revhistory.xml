@@ -114,4 +114,12 @@
             Hiányosságok pótlása.
         </revremark>
     </revision>
+    <revision>
+        <revnumber>1.2</revnumber>
+        <date>2019-05-09</date>
+        <authorinitials>sidragosam</authorinitials>
+        <revremark>
+            Copyright javítása, további hiányosságok pótlása.
+        </revremark>
+    </revision>
 </revhistory>
